@@ -1,14 +1,10 @@
 clear; clc; close all
-%% load audio files
-filestr1 = 'speech_samples/OSR_us_000_00'; filestr2 = '_8k.wav';
-filenum1 = 10;
-filenum2 = 11;
-file1 = [filestr1,num2str(filenum1),filestr2];
-file2 = [filestr1,num2str(filenum2),filestr2];
+%% load audio file
+filepath = 'speech_samples/separate/';
+file = [filepath,'male_01.wav'];
 N = 10000;
-[y1,s1,Fs] = preprocess(file1,N);
-[y2,s2,~] = preprocess(file2,N);
-y1 = y1(1:N); y2 = y2(1:N); 
+[y,s,ts,Fs] = preprocess(file);
+plot_s(ts,s);
 %% estimate pitch
 freqwidth = 875; % Hz
 timewidth = 20e-3; % s
