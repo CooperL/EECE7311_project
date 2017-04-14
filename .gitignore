@@ -1,2 +1,3 @@
 *.m~
 speech_samples/*
+*.wav
