@@ -1,4 +1,4 @@
-function [y,s,ts,Fs] = preprocess(filename)
+function [y,s,ts,dt,dw,Fs] = preprocess(filename,Nfft)
 %PREPROCESS get audio file and highpass filter spectrogram
 
 dt = 1e-3; % window shift

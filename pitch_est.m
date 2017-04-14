@@ -1,12 +1,9 @@
-function [p] = pitch_est(s,Fs,freqwidth,timewidth,freqjump,timejump)
+function [p] = pitch_est(s,Fs,Nfw,Ntw,dNf,dNt)
 %PITCH_EST estimate pitch for localized time-freq regions using GCT
 
 Nf = size(s,1);
 Nt = size(s,2);
 Nfft = 2*(size(s,1)-1);
-Nfw = round(freqwidth*Nfft/Fs);
-% ensure divisible by 4
-Ntw = round(timewidth*Fs); Nt = Nt-mod(Nt,4);
 
 Nfjump = round(freqjump*Nfft/Fs);
 Ntjump = round(timejump*Fs);
