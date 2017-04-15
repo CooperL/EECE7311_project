@@ -6,7 +6,7 @@ Nw = Fs*32e-3;
 noverlap = Nw-Fs*1e-3;
 Nfft = 512;
 s = spectrogram(y,hamming(Nw),noverlap,Nfft);
-figure;
-spectrogram(y,hamming(Nw),noverlap,Nfft,Fs,'yaxis')
+% figure;
+% spectrogram(y,hamming(Nw),noverlap,Nfft,Fs,'yaxis')
 end
 
