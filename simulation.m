@@ -1,11 +1,14 @@
 clear; clc; close all
 %% load audio file
-filepath = 'speech_samples/separate/';
-file = [filepath,'male_01.wav'];
+filepath = 'speech_samples/';
+file = [filepath,'OSR_us_000_0010_8k.wav'];
 Nfft = 512;
-[y,s,ts,dt,dw,Fs] = preprocess('pulse_chirp.wav',Nfft);
+[y,s,ts,dt,dw,Fs] = preprocess(file,Nfft);
 plot_s(ts,abs(s));
 df = 1/Nfft; % in matlab normalized (w/pi)
+%%
+% load('plane_wave_tp_16_wsp_10_tp_4_wsp_20.mat');
+
 %% process spectrogram
 % take gradient and log
 % filter design
@@ -20,14 +23,6 @@ freqz2(h);
 sfilt = conv2(abs(s),h,'same');
 figure; imagesc(sfilt);
 %% estimate pitch
-freqwidth = 875; % Hz
-timewidth = 100e-3; % s
-freqjump = 140; % Hz
-timejump = 5e-3; % s
-
-p1 = pitch_est(s1,Fs,freqwidth,timewidth,freqjump,timejump);
-%%
-p1m = mean(p1,1);
 % define window and jump sizes
 freqwidth = hz2f(875,Fs); % Hz
 timewidth = 100e-3; % s
@@ -38,4 +33,4 @@ Nfw = f2bin(freqwidth,Nfft); % number of FFT bins in window
 Ntw = timewidth/dt; % number of time slices in window
 dNf = f2bin(freqjump,Nfft); % number of freq bins to jump
 dNt = timejump/dt; % number of time slices to jump
-p = pitch_est(sg,Fs,Nfw,Ntw,dNf,dNt);
+p = pitch_est(sfilt,Fs,Nfw,Ntw,dNf,dNt);
