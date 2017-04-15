@@ -7,8 +7,8 @@ Nfft = 512;
 plot_s(ts,abs(s));
 df = 1/Nfft; % in matlab normalized (w/pi)
 %%
-% load('plane_wave_tp_16_wsp_10_tp_4_wsp_20.mat');
-
+load('plane_wave_tp_16_wsp_10_tp_4_wsp_20.mat');
+% s = zeros(257,1000)+randn(257,1000);
 %% process spectrogram
 % take gradient and log
 % filter design
@@ -33,4 +33,5 @@ Nfw = f2bin(freqwidth,Nfft); % number of FFT bins in window
 Ntw = timewidth/dt; % number of time slices in window
 dNf = f2bin(freqjump,Nfft); % number of freq bins to jump
 dNt = timejump/dt; % number of time slices to jump
-p = pitch_est(sfilt,Fs,Nfw,Ntw,dNf,dNt);
+[p,params] = carrier_params(sfilt,Fs,Nfw,Ntw,dNf,dNt);
+figure; plot(p);
