@@ -49,12 +49,11 @@ ws1 = pi/10;
 theta2 = pi/4;
 ws2 = pi/20;
 
-phi1 = n*sin(theta1)+m*cos(theta1);
-phi2 = n*sin(theta2)+m*cos(theta2);
+phi1 = n*cos(theta1)+m*sin(theta1);
+phi2 = n*cos(theta2)+m*sin(theta2);
 s1 = cos(ws1*phi1);
 s2 = cos(ws2*phi2);
 s = [s1,s2];
 figure; imagesc(s);
 save('plane_wave_tp_16_wsp_10_tp_4_wsp_20.mat','s');
 %% zeros
-s = 

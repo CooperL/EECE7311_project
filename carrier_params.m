@@ -1,9 +1,8 @@
-function [p,freq_params,angle_params] = carrier_params(s,Fs,Nfw,Ntw,dNf,dNt)
+function [freq_ests,angle_ests,phase_ests] = carrier_params(s,Nfw,Ntw,dNf,dNt)
 %carrier parameter estimate for localized time-freq regions using GCT
 
 Nf = size(s,1);
 Nt = size(s,2);
-Nfft = 2*(size(s,1)-1);
 Nfft_gct = 512;
 
 w = hamming(Nfw)*hamming(Ntw)';
@@ -12,7 +11,8 @@ tests = floor((Nt-Ntw)/dNt);
 fests = floor((Nf-Nfw)/dNf);
 fest = zeros(fests,tests);
 freq_params = cell(fests,tests);
-angle_params = zeros(fests,tests);
+phase_ests = cell(fests,tests);
+angle_ests = zeros(fests,tests);
 
 % PITCH ESTIMATION
 % time
@@ -32,7 +32,7 @@ for ii=1:tests
         [maxIdx1,maxIdx2] = ind2sub(size(S),maxIdx);
         f = bin2f([maxIdx1,maxIdx2],Nfft_gct);
         ws = norm(f);
-        fest(jj,ii)= ws*(3/2);
+        fest(jj,ii)= ws*pi;
         
         % CARRIER PARAMS
         if f(1)~=0 && f(2) ~= 0
@@ -41,16 +41,20 @@ for ii=1:tests
             K = 0;
         end
         curr_freq_params = zeros(1,K);
+        curr_phase = zeros(1,K);
         for k=1:K
             curr_freq_params(k) = abs(S(k*maxIdx1,k*maxIdx2));
+            curr_phase(k) = angle(S(k*maxIdx1,k*maxIdx2));
         end
-        angle_params(jj,ii) = atan(maxIdx2/maxIdx1);
+        angle_ests(jj,ii) = atan(maxIdx1/maxIdx2);
         freq_params{jj,ii} = curr_freq_params;
+        phase_ests{jj,ii} = curr_phase;
 %         figure; imagesc(abs(S));
     end
 end
 thresh = 0.3;
 sd = std(fest);
-p = median(fest);
-p(sd>thresh) = 0;
+% freq_ests = median(fest);
+% freq_ests(sd>thresh) = 0;
+freq_ests = fest;
 end
