@@ -1,3 +1,4 @@
 *.m~
 speech_samples/*
 *.wav
+*.fig
