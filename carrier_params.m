@@ -1,4 +1,4 @@
-function [p,params] = carrier_params(s,Fs,Nfw,Ntw,dNf,dNt)
+function [p,freq_params,angle_params] = carrier_params(s,Fs,Nfw,Ntw,dNf,dNt)
 %carrier parameter estimate for localized time-freq regions using GCT
 
 Nf = size(s,1);
@@ -11,7 +11,8 @@ w = hamming(Nfw)*hamming(Ntw)';
 tests = floor((Nt-Ntw)/dNt);
 fests = floor((Nf-Nfw)/dNf);
 fest = zeros(fests,tests);
-params = cell(fests,tests);
+freq_params = cell(fests,tests);
+angle_params = zeros(fests,tests);
 
 % PITCH ESTIMATION
 % time
@@ -39,11 +40,12 @@ for ii=1:tests
         else
             K = 0;
         end
-        curr_params = zeros(1,K);
-        for i=1:K
-            curr_params(i) = abs(S(i*maxIdx1,maxIdx2));
+        curr_freq_params = zeros(1,K);
+        for k=1:K
+            curr_freq_params(k) = abs(S(k*maxIdx1,k*maxIdx2));
         end
-        params{jj,ii} = curr_params;
+        angle_params(jj,ii) = atan(maxIdx2/maxIdx1);
+        freq_params{jj,ii} = curr_freq_params;
 %         figure; imagesc(abs(S));
     end
 end

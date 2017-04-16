@@ -33,5 +33,6 @@ Nfw = f2bin(freqwidth,Nfft); % number of FFT bins in window
 Ntw = timewidth/dt; % number of time slices in window
 dNf = f2bin(freqjump,Nfft); % number of freq bins to jump
 dNt = timejump/dt; % number of time slices to jump
-[p,params] = carrier_params(sfilt,Fs,Nfw,Ntw,dNf,dNt);
+[p,freq_params,angle_params] = carrier_params(sfilt,Fs,Nfw,Ntw,dNf,dNt);
 figure; plot(p);
+%% estimate gains single speaker
