@@ -56,4 +56,22 @@ s2 = cos(ws2*phi2);
 s = [s1,s2];
 figure; imagesc(s);
 save('plane_wave_tp_16_wsp_10_tp_4_wsp_20.mat','s');
-%% zeros
+%% two plane waves
+clear; clc; 
+Fs = 8000;
+dt = 1e-3;
+M = 257;
+N = 1/dt;
+[n,m] = meshgrid(0:N-1,0:M-1);
+theta1 = pi/3;
+ws1 = pi/15;
+theta2 = pi/12;
+ws2 = pi/7;
+
+phi1 = n*cos(theta1)+m*sin(theta1);
+phi2 = n*cos(theta2)+m*sin(theta2);
+s1 = cos(ws1*phi1);
+s2 = cos(ws2*phi2);
+s = [s1,s2];
+figure; imagesc(s);
+save('plane_wave_tp_3_wsp_15_tp_12_wsp_7.mat','s');

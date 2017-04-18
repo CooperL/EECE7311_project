@@ -40,7 +40,7 @@ for ii=1:tests
         end
         bmat = se - sum(a.*cos(phi),3);
         b = reshape(bmat,Nfw*Ntw,1);
-        beta{jj,ii} = inv(A'*A)*A'*b;
+        beta{jj,ii} = pinv(A'*A)*A'*b;
         
         % restimate spectrogram
         s_ql3 = zeros(Nfw,Ntw,Kw);

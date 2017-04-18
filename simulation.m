@@ -1,17 +1,19 @@
 clear; clc; close all
 %% load audio file
-filepath = 'speech_samples/';
-file = [filepath,'OSR_us_000_0010_8k.wav'];
+filepath = 'speech_samples/separate/';
+file = [filepath,'fem_01.wav'];
 Nfft = 512;
-[y,s,ts,dt,dw,Fs] = preprocess(file,Nfft);
+[y,s,ts,dt,dw,Fs,tspec,noverlap] = preprocess(file,Nfft);
 plot_s(ts,abs(s));
 df = 1/Nfft; % in matlab normalized (w/pi)
 %%
-load('plane_wave_tp_16_wsp_10_tp_4_wsp_20.mat');
+% load('plane_wave_tp_3_wsp_15_tp_12_wsp_7.mat');
 % s = zeros(257,1000)+randn(257,1000);
 %% process spectrogram
 % take gradient and log
 % filter design
+s_one = s(1:(Nfft/2),:);
+%%
 Nfilt = 21;
 x = linspace(-1,1,Nfilt);
 fc_hp = 0.0893;
@@ -20,8 +22,8 @@ Hd_hp = abs(sqrt((f1.^2+f2.^2)) > fc_hp);
 figure; mesh(Hd_hp);
 h_hp = fsamp2(Hd_hp);
 freqz2(h_hp);
-s_hp = conv2(abs(s),h_hp,'same');
-figure; imagesc(s_hp);
+s_hp = conv2(abs(s_one),h_hp,'same'); % abs()
+figure; imagesc(abs(s_hp));
 %% estimate pitch
 % define window and jump sizes
 freqwidth = hz2f(875,Fs); % Hz
@@ -44,4 +46,8 @@ Hd_lp = abs(sqrt((f1.^2+f2.^2)) < fc_lp);
 % figure; mesh(Hd_lp);
 h_lp = fsamp2(Hd_lp);
 % freqz2(h_lp);
-s_est = est_spec_reg(s,s_hp,freq_ests,angle_ests,phase_ests,h_lp,Nfw,Ntw,dNf,dNt);
+s_est = est_spec_reg(s_one,s_hp,freq_ests,angle_ests,phase_ests,h_lp,Nfw,Ntw,dNf,dNt);
+%% re-synthesize
+s_est_sym = [s_est; flip(s_est,1)];
+%%
+y_out = synthesize_from_spec(s_est_sym,Fs,Nfft,tspec);
