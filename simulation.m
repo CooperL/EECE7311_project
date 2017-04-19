@@ -46,7 +46,7 @@ Hd_lp = abs(sqrt((f1.^2+f2.^2)) < fc_lp);
 % figure; mesh(Hd_lp);
 h_lp = fsamp2(Hd_lp);
 % freqz2(h_lp);
-s_est = est_spec_reg(s_one,s_hp,freq_ests,angle_ests,phase_ests,h_lp,Nfw,Ntw,dNf,dNt);
+s_est = est_spec_single(s_one,s_hp,freq_ests,angle_ests,phase_ests,h_lp,Nfw,Ntw,dNf,dNt);
 %% re-synthesize
 s_est_sym = [s_est; flip(s_est,1)];
 %%
