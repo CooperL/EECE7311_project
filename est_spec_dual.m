@@ -1,4 +1,4 @@
-function s_est = est_spec_single(s,s_hp,freq_ests,angle_ests,phase_ests,h_lp,Nfw,Ntw,dNf,dNt)
+function s_est = est_spec_dual(s,s_hp,freq_ests,angle_ests,phase_ests,h_lp,Nfw,Ntw,dNf,dNt)
 %EST_GAINS1 estimate gain parameters for single speaker
 Z = numel(angle_ests);
 
