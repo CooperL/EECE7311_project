@@ -8,8 +8,10 @@ Nout = tspec(end)*Fs+Nfft;
 y = zeros(1,Nout);
 
 for ii=1:length(tspec)
+    disp(['iter: ',num2str(ii)]);
     idx1 = round((tspec(ii)-tspec(1))*Fs+1);
-    y(idx1:(idx1+Nfft-1)) = ifft(s(:,ii))'+y(idx1:(idx1+Nfft-1));
+    idx2 = idx1+Nfft-1;
+    y(idx1:idx2) = ifft(s(:,ii))'+y(idx1:idx2);
 end
 
 end
